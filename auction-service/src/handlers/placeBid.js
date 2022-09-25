@@ -17,7 +17,7 @@ async function placeBid(event, context) {
     throw new createError.BadRequest('You cannot bid on closed auctions');
   }
 
-  if (amount <= auction.hightestBid.amount) {
+  if (amount <= auction.highestBid.amount) {
     throw new createError.BadRequest('Bid must be higher');
   }
 
@@ -25,14 +25,14 @@ async function placeBid(event, context) {
     throw new createError.BadRequest('You cannot bid on your own stuff');
   }
 
-  if (auction.hightestBid.bidder === email) {
+  if (auction.highestBid.bidder === email) {
     throw new createError.BadRequest('You already have the highest bid');
   }
 
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME,
     Key: { id },
-    UpdateExpression: 'set hightestBid.amount = :amount, hightestBid.bidder = :bidder',
+    UpdateExpression: 'set highestBid.amount = :amount, highestBid.bidder = :bidder',
     ExpressionAttributeValues: {
       ':amount': amount,
       ':bidder': email,
